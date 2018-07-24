@@ -9,7 +9,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_hero.view.imgHeroes
 import kotlinx.android.synthetic.main.item_hero.view.txtHeroName
 
-class HeroAdapter(private val heroes: List<Hero>) : RecyclerView.Adapter<HeroHolder>() {
+class HeroAdapter(private val heroes: List<Hero>,
+                  private val listener: HeroListener) : RecyclerView.Adapter<HeroHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): HeroHolder {
         return HeroHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_hero, viewGroup, false))
@@ -18,16 +19,22 @@ class HeroAdapter(private val heroes: List<Hero>) : RecyclerView.Adapter<HeroHol
     override fun getItemCount(): Int = heroes.size
 
     override fun onBindViewHolder(holder: HeroHolder, position: Int) {
-        holder.bindHero(heroes[position])
+        holder.bindHero(heroes[position], listener)
     }
+}
+
+interface HeroListener {
+    fun onHeroClick(hero: Hero)
 }
 
 class HeroHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val tvHeroName = view.txtHeroName
     private val imgHero = view.imgHeroes
 
-    fun bindHero(hero: Hero) {
+    fun bindHero(hero: Hero, listener: HeroListener) {
         tvHeroName.text = hero.name
         Picasso.get().load(hero.image).into(imgHero)
+
+        itemView.setOnClickListener { listener.onHeroClick(hero) }
     }
 }
