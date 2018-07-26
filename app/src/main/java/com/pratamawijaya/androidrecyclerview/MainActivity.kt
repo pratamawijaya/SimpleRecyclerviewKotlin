@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import com.pratamawijaya.androidrecyclerview.domain.BannerPromo
 import com.pratamawijaya.androidrecyclerview.domain.Hero
+import com.pratamawijaya.androidrecyclerview.item.BannerCarouselItem
+import com.pratamawijaya.androidrecyclerview.item.BannerListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_main.rvMain
 
-class MainActivity : AppCompatActivity(), HeroListener {
+class MainActivity : AppCompatActivity(), HeroListener, BannerListener {
 
     // declare adapter from groupadapter
     private var groupAdapter = GroupAdapter<ViewHolder>()
@@ -18,19 +21,25 @@ class MainActivity : AppCompatActivity(), HeroListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val listHeroes = listOf(
-                Hero(name = "Spider-Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/9/30/538cd33e15ab7/standard_xlarge.jpg"),
-                Hero(name = "Black Panther", image = "https://i.annihil.us/u/prod/marvel/i/mg/1/c0/537ba2bfd6bab/standard_xlarge.jpg"),
-                Hero(name = "Iron Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/6/a0/55b6a25e654e6/standard_xlarge.jpg"),
-                Hero(name = "Dead Pool", image = "https://i.annihil.us/u/prod/marvel/i/mg/5/c0/537ba730e05e0/standard_xlarge.jpg"),
-                Hero(name = "Captain Marvel", image = "https://i.annihil.us/u/prod/marvel/i/mg/c/10/537ba5ff07aa4/standard_xlarge.jpg"),
-                Hero(name = "Ant Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/6/90/54ad7297b0a59/standard_xlarge.jpg"),
-                Hero(name = "Spider-Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/9/30/538cd33e15ab7/standard_xlarge.jpg"),
-                Hero(name = "Black Panther", image = "https://i.annihil.us/u/prod/marvel/i/mg/1/c0/537ba2bfd6bab/standard_xlarge.jpg"),
-                Hero(name = "Iron Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/6/a0/55b6a25e654e6/standard_xlarge.jpg"),
-                Hero(name = "Dead Pool", image = "https://i.annihil.us/u/prod/marvel/i/mg/5/c0/537ba730e05e0/standard_xlarge.jpg"),
-                Hero(name = "Captain Marvel", image = "https://i.annihil.us/u/prod/marvel/i/mg/c/10/537ba5ff07aa4/standard_xlarge.jpg"),
-                Hero(name = "Ant Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/6/90/54ad7297b0a59/standard_xlarge.jpg")
+        val promos = listOf(
+                BannerPromo(name = "Puncak badai uang",
+                        image = "https://s2.bukalapak.com/uploads/promo_partnerinfo_bloggy/2842/Bloggy_1_puncak.jpg"),
+                BannerPromo(
+                        name = "hati hati ada guncangan badai uang",
+                        image = "https://s4.bukalapak.com/uploads/promo_partnerinfo_bloggy/5042/Bloggy_1.jpg"
+                ),
+                BannerPromo(name = "Puncak badai uang",
+                        image = "https://s2.bukalapak.com/uploads/promo_partnerinfo_bloggy/2842/Bloggy_1_puncak.jpg"),
+                BannerPromo(
+                        name = "hati hati ada guncangan badai uang",
+                        image = "https://s4.bukalapak.com/uploads/promo_partnerinfo_bloggy/5042/Bloggy_1.jpg"
+                ),
+                BannerPromo(name = "Puncak badai uang",
+                        image = "https://s2.bukalapak.com/uploads/promo_partnerinfo_bloggy/2842/Bloggy_1_puncak.jpg"),
+                BannerPromo(
+                        name = "hati hati ada guncangan badai uang",
+                        image = "https://s4.bukalapak.com/uploads/promo_partnerinfo_bloggy/5042/Bloggy_1.jpg"
+                )
         )
 
         rvMain.apply {
@@ -38,13 +47,18 @@ class MainActivity : AppCompatActivity(), HeroListener {
             adapter = groupAdapter
         }
 
-        listHeroes.map {
-            if (it.name.startsWith("D")) {
-                groupAdapter.add(HeroSecondItem(it))
-            } else {
-                groupAdapter.add(HeroItem(it))
-            }
-        }
+        // declare banner carousel
+        val bannerCarouselItem = BannerCarouselItem(promos, supportFragmentManager, this)
+
+
+        groupAdapter.add(bannerCarouselItem)
+    }
+
+    override fun onSeeAllPromoClick() {
+        Toast.makeText(this, "se. all promo", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBannerClick(promo: BannerPromo) {
     }
 
     override fun onHeroClick(hero: Hero) {
