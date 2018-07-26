@@ -28,6 +28,9 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    implementation 'com.xwray:groupie:2.1.0'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

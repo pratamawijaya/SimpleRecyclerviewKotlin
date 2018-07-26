@@ -5,9 +5,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.pratamawijaya.androidrecyclerview.domain.Hero
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_main.rvMain
 
 class MainActivity : AppCompatActivity(), HeroListener {
+
+    // declare adapter from groupadapter
+    private var groupAdapter = GroupAdapter<ViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +33,17 @@ class MainActivity : AppCompatActivity(), HeroListener {
                 Hero(name = "Ant Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/6/90/54ad7297b0a59/standard_xlarge.jpg")
         )
 
-        val heroesAdapter = HeroAdapter(listHeroes, this)
-
         rvMain.apply {
-//            layoutManager = GridLayoutManager(this@MainActivity, 3)
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = heroesAdapter
+            adapter = groupAdapter
+        }
+
+        listHeroes.map {
+            if (it.name.startsWith("D")) {
+                groupAdapter.add(HeroSecondItem(it))
+            } else {
+                groupAdapter.add(HeroItem(it))
+            }
         }
     }
 
