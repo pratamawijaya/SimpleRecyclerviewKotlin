@@ -7,7 +7,7 @@ import android.widget.Toast
 import com.pratamawijaya.androidrecyclerview.domain.Hero
 import kotlinx.android.synthetic.main.activity_main.rvMain
 
-class MainActivity : AppCompatActivity(), HeroListener {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +28,15 @@ class MainActivity : AppCompatActivity(), HeroListener {
                 Hero(name = "Ant Man", image = "https://i.annihil.us/u/prod/marvel/i/mg/6/90/54ad7297b0a59/standard_xlarge.jpg")
         )
 
-        val heroesAdapter = HeroAdapter(listHeroes, this)
+        val heroesAdapter = HeroAdapter(listHeroes) { hero ->
+            Toast.makeText(this, "hero clicked ${hero.name}", Toast.LENGTH_SHORT).show()
+        }
 
         rvMain.apply {
-//            layoutManager = GridLayoutManager(this@MainActivity, 3)
+            //            layoutManager = GridLayoutManager(this@MainActivity, 3)
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = heroesAdapter
         }
     }
 
-    override fun onHeroClick(hero: Hero) {
-        Toast.makeText(this, "hero clicked ${hero.name}", Toast.LENGTH_SHORT).show()
-    }
 }
