@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_hero.view.imgHeroes
 import kotlinx.android.synthetic.main.item_hero.view.txtHeroName
 
 class HeroAdapter(private val heroes: List<Hero>,
-                  private val listener: HeroListener) : RecyclerView.Adapter<HeroHolder>() {
+                  private val adapterOnClick: (Hero) -> Unit) : RecyclerView.Adapter<HeroAdapter.HeroHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): HeroHolder {
         return HeroHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_hero, viewGroup, false))
@@ -19,22 +19,19 @@ class HeroAdapter(private val heroes: List<Hero>,
     override fun getItemCount(): Int = heroes.size
 
     override fun onBindViewHolder(holder: HeroHolder, position: Int) {
-        holder.bindHero(heroes[position], listener)
+        holder.bindHero(heroes[position])
     }
-}
 
-interface HeroListener {
-    fun onHeroClick(hero: Hero)
-}
+    inner class HeroHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bindHero(hero: Hero) {
+            itemView.apply {
+                txtHeroName.text = hero.name
+                Picasso.get().load(hero.image).into(imgHeroes)
 
-class HeroHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val tvHeroName = view.txtHeroName
-    private val imgHero = view.imgHeroes
-
-    fun bindHero(hero: Hero, listener: HeroListener) {
-        tvHeroName.text = hero.name
-        Picasso.get().load(hero.image).into(imgHero)
-
-        itemView.setOnClickListener { listener.onHeroClick(hero) }
+                setOnClickListener {
+                    adapterOnClick(hero)
+                }
+            }
+        }
     }
 }
